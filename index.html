@@ -1,82 +1,35 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Bienvenue - Coboybleu</title>
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+  <meta charset="UTF-8" />
+  <title>Téléchargement du programme</title>
+  <style>
     body {
-        overflow: hidden; /* Plus de scroll */
-        font-family: Arial, sans-serif;
-        background: #111;
-        color: white;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #f0f0f0;
     }
-    .container {
-        width: 100vw;
-        height: 100vh;
-        background: linear-gradient(135deg, #ff0077, #ff6f00);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        position: relative;
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #007bff;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
-    /* Compteur en haut */
-    #globalCount {
-        position: absolute;
-        top: 30px;
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-align: center;
-        width: 100%;
-        user-select: none;
-        color: #ffd700; /* jaune flashy */
-        text-shadow: 0 0 8px #ff6f00;
+    button:hover {
+      background-color: #0056b3;
     }
-    .blob {
-        background: rgba(255, 255, 255, 0.2);
-        padding: 2rem 3rem;
-        border-radius: 50px 100px 80px 120px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        text-align: center;
-        font-size: 2rem;
-        max-width: 400px;
-    }
-</style>
+  </style>
 </head>
 <body>
-
-<div class="container">
-    <div id="globalCount">Chargement du compteur...</div>
-    <div class="blob">
-        <h1>👀 Visiteurs</h1>
-        <p id="visitorCount">Chargement...</p>
-    </div>
-</div>
-
-<script>
-    // Ici on garde ton compteur local, ça compte les visites sur CE navigateur uniquement
-    let visits = localStorage.getItem("visits");
-    if (!visits) visits = 0;
-    visits++;
-    localStorage.setItem("visits", visits);
-    document.getElementById("visitorCount").textContent = visits + " visites locales";
-
-    // Comme on n’a pas de backend, pour le compteur “global” on va simuler avec un chiffre fixe
-    // Tu peux modifier ce chiffre à la main pour faire genre "vrai compteur global"
-    const globalVisitors = 1234;
-    document.getElementById("globalCount").textContent = `Total visiteurs sur le site : ${globalVisitors}`;
-</script>
-
+  <h1>Télécharge ton programme ici !</h1>
+  <p>Clique sur le bouton ci-dessous pour télécharger le fichier .exe</p>
+  <a href="monprogramme.exe" download>
+    <button>Télécharger</button>
+  </a>
 </body>
 </html>
