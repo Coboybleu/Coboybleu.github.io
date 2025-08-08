@@ -1,1 +1,64 @@
 # Coboybleu.github.io
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coboybleu — Accueil</title>
+  <style>
+    :root{--bg1:#091126;--bg2:#1f3a8a;--card:#ffffffee}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#0b1220;background:linear-gradient(135deg,var(--bg1),var(--bg2));}
+    .card{background:var(--card);padding:2.5rem;border-radius:16px;box-shadow:0 10px 30px rgba(2,6,23,0.5);max-width:760px;text-align:center}
+    h1{margin:0;font-size:2.6rem;letter-spacing:-1px}
+    p{margin:.8rem 0 1.6rem;font-size:1.15rem}
+    .btn{display:inline-block;padding:.7rem 1.2rem;border-radius:10px;background:#0b1220;color:#fff;text-decoration:none;font-weight:600;cursor:pointer;border:none}
+    .greeting{font-size:1.05rem;padding:.6rem;border-radius:8px;background:rgba(11,18,32,0.04)}
+    .sparkle{display:inline-block;margin-left:.6rem;opacity:0;transform:translateY(-6px);animation:pop .9s ease forwards}
+    @keyframes pop{to{opacity:1;transform:translateY(0)}}
+    footer{margin-top:1.2rem;font-size:.9rem;color:#394a6b}
+    @media (max-width:480px){h1{font-size:1.8rem;padding:0 1rem}}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <h1 id="title">Bonjour ! <span aria-hidden="true">👋</span></h1>
+    <p class="greeting" id="message">Bienvenue sur le site de <strong>Coboybleu</strong> — merci ! <span class="sparkle" id="spark">✨</span></p>
+
+    <div>
+      <button class="btn" id="sayHello">Dire bonjour à voix haute</button>
+      <button class="btn" id="toggleTheme" style="margin-left:.6rem;background:#e5e7eb;color:#0b1220">Changer le style</button>
+    </div>
+
+    <footer>
+      <small>Crée with ❤️ pour Coboybleu — Modifie le texte comme tu veux.</small>
+    </footer>
+  </main>
+
+  <script>
+    // animation on load
+    window.addEventListener('load', ()=>{
+      document.getElementById('spark').classList.add('sparkle');
+    });
+
+    // speech (si supporté)
+    document.getElementById('sayHello').addEventListener('click', ()=>{
+      const text = 'Bonjour, bienvenue sur le site de Coboybleu. Merci.';
+      if ('speechSynthesis' in window) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'fr-FR';
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(msg);
+      } else {
+        alert(text);
+      }
+    });
+
+    // simple style toggle
+    document.getElementById('toggleTheme').addEventListener('click', ()=>{
+      document.documentElement.style.setProperty('--bg1', getComputedStyle(document.documentElement).getPropertyValue('--bg1').trim() === '#091126' ? '#0b3b17' : '#091126');
+      document.documentElement.style.setProperty('--bg2', getComputedStyle(document.documentElement).getPropertyValue('--bg2').trim() === '#1f3a8a' ? '#0a7b9c' : '#1f3a8a');
+    });
+  </script>
+</body>
+</html>
