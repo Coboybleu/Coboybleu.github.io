@@ -1,161 +1,99 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Coboybleu</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bienvenue - Coboybleu</title>
 <style>
-  body {
-    margin: 0;
-    font-family: "Segoe UI", sans-serif;
-    background: linear-gradient(135deg, #0f172a, #1e3a8a);
-    color: white;
-    overflow: hidden;
-  }
-
-  .container {
-    display: flex;
-    width: 200%;
-    height: 100vh;
-    transition: transform 0.8s ease;
-  }
-
-  .page {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .card {
-    background: radial-gradient(circle at top left, #ffffffcc, #ffffff99);
-    border-radius: 50% 50% 50% 50% / 60% 40% 60% 40%;
-    padding: 3rem;
-    color: #0f172a;
-    width: 320px;
-    text-align: center;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    animation: fadeIn 1s ease forwards;
-    transform: scale(0.8);
-    opacity: 0;
-  }
-
-  .card.show {
-    animation: popIn 1s ease forwards;
-  }
-
-  @keyframes popIn {
-    0% { transform: scale(0.8); opacity: 0; filter: blur(10px); }
-    100% { transform: scale(1); opacity: 1; filter: blur(0); }
-  }
-
-  .btns {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .btn {
-    background: #0f172a;
-    color: white;
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-  }
-
-  .swipe-hint {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(255,255,255,0.5);
-    font-size: 1.2rem;
-    user-select: none;
-  }
-
-  .left-hint { left: 10px; }
-  .right-hint { right: 10px; }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        overflow-x: hidden;
+        overflow-y: hidden;
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: white;
+    }
+    .container {
+        display: flex;
+        width: 200vw; /* 2 pages */
+        height: 100vh;
+        scroll-behavior: smooth;
+    }
+    section {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        position: relative;
+        flex-shrink: 0;
+    }
+    /* Page 1 - Bienvenue */
+    .welcome {
+        background: linear-gradient(135deg, #0077ff, #00d4ff);
+        animation: fadeIn 1.5s ease-out;
+    }
+    /* Page 2 - Compteur */
+    .counter {
+        background: linear-gradient(135deg, #ff0077, #ff6f00);
+        animation: fadeIn 1.5s ease-out;
+    }
+    /* Effet tache */
+    .blob {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 2rem 3rem;
+        border-radius: 50px 100px 80px 120px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        text-align: center;
+    }
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
 </style>
 </head>
 <body>
 
-<div class="swipe-hint left-hint">← Swipe</div>
-<div class="swipe-hint right-hint">Swipe →</div>
+<div class="container" id="scrollContainer">
+    <!-- Page 1 -->
+    <section class="welcome">
+        <div class="blob">
+            <h1>👋 Bonjour</h1>
+            <p>Bienvenue sur le site de <strong>Coboybleu</strong></p>
+            <p>Merci 🙏</p>
+        </div>
+    </section>
 
-<div class="container" id="container">
-  <!-- Page 1 -->
-  <div class="page">
-    <div class="card" id="card1">
-      <h1>👋 Bonjour !</h1>
-      <p>Bienvenue sur le site de <strong>Coboybleu</strong> — merci !</p>
-      <div class="btns">
-        <button class="btn" onclick="sayHello()">Dire bonjour</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Page 2 -->
-  <div class="page">
-    <div class="card" id="card2">
-      <h1>📊 Visiteurs</h1>
-      <p id="visitorCount">0</p>
-      <small>(Nombre total de visites sur cet appareil)</small>
-    </div>
-  </div>
+    <!-- Page 2 -->
+    <section class="counter">
+        <div class="blob">
+            <h1>👀 Visiteurs</h1>
+            <p id="visitorCount">Chargement...</p>
+        </div>
+    </section>
 </div>
 
 <script>
-let currentPage = 0;
-const container = document.getElementById('container');
+    // Scroll horizontal avec molette
+    const container = document.getElementById('scrollContainer');
+    window.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        container.scrollLeft += e.deltaY;
+    }, { passive: false });
 
-function showPage(page) {
-  currentPage = page;
-  container.style.transform = `translateX(-${page * 50}%)`;
-  document.querySelectorAll('.card').forEach(c => c.classList.remove('show'));
-  setTimeout(() => {
-    document.querySelector(`#card${page+1}`).classList.add('show');
-  }, 300);
-}
-
-// Speech
-function sayHello() {
-  const text = 'Bonjour, bienvenue sur le site de Coboybleu. Merci.';
-  if ('speechSynthesis' in window) {
-    const msg = new SpeechSynthesisUtterance(text);
-    msg.lang = 'fr-FR';
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(msg);
-  } else {
-    alert(text);
-  }
-}
-
-// Swipe detection
-let startX = 0;
-document.addEventListener('touchstart', e => {
-  startX = e.touches[0].clientX;
-});
-document.addEventListener('touchend', e => {
-  let diff = e.changedTouches[0].clientX - startX;
-  if (diff > 50 && currentPage > 0) showPage(currentPage - 1);
-  if (diff < -50 && currentPage < 1) showPage(currentPage + 1);
-});
-
-// Arrows
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight' && currentPage < 1) showPage(currentPage + 1);
-  if (e.key === 'ArrowLeft' && currentPage > 0) showPage(currentPage - 1);
-});
-
-// Visitor counter
-let visits = localStorage.getItem('visitsCoboybleu') || 0;
-visits++;
-localStorage.setItem('visitsCoboybleu', visits);
-document.getElementById('visitorCount').textContent = visits;
-
-// Init
-showPage(0);
+    // Compteur visiteurs (LocalStorage)
+    let visits = localStorage.getItem("visits");
+    if (!visits) visits = 0;
+    visits++;
+    localStorage.setItem("visits", visits);
+    document.getElementById("visitorCount").textContent = visits + " visites";
 </script>
+
 </body>
 </html>
