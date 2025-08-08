@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Bienvenue - Coboybleu</title>
 <style>
     * {
@@ -11,39 +11,37 @@
         box-sizing: border-box;
     }
     body {
-        overflow-x: hidden;
-        overflow-y: hidden;
+        overflow: hidden; /* Plus de scroll */
         font-family: Arial, sans-serif;
         background: #111;
         color: white;
-    }
-    .container {
-        display: flex;
-        width: 200vw; /* 2 pages */
-        height: 100vh;
-        scroll-behavior: smooth;
-    }
-    section {
-        width: 100vw;
         height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 2rem;
-        position: relative;
-        flex-shrink: 0;
     }
-    /* Page 1 - Bienvenue */
-    .welcome {
-        background: linear-gradient(135deg, #0077ff, #00d4ff);
-        animation: fadeIn 1.5s ease-out;
-    }
-    /* Page 2 - Compteur */
-    .counter {
+    .container {
+        width: 100vw;
+        height: 100vh;
         background: linear-gradient(135deg, #ff0077, #ff6f00);
-        animation: fadeIn 1.5s ease-out;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
     }
-    /* Effet tache */
+    /* Compteur en haut */
+    #globalCount {
+        position: absolute;
+        top: 30px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+        user-select: none;
+        color: #ffd700; /* jaune flashy */
+        text-shadow: 0 0 8px #ff6f00;
+    }
     .blob {
         background: rgba(255, 255, 255, 0.2);
         padding: 2rem 3rem;
@@ -51,48 +49,33 @@
         backdrop-filter: blur(10px);
         box-shadow: 0 0 20px rgba(0,0,0,0.5);
         text-align: center;
-    }
-    @keyframes fadeIn {
-        0% { opacity: 0; transform: scale(0.9) translateY(20px); }
-        100% { opacity: 1; transform: scale(1) translateY(0); }
+        font-size: 2rem;
+        max-width: 400px;
     }
 </style>
 </head>
 <body>
 
-<div class="container" id="scrollContainer">
-    <!-- Page 1 -->
-    <section class="welcome">
-        <div class="blob">
-            <h1>👋 Bonjour</h1>
-            <p>Bienvenue sur le site de <strong>Coboybleu</strong></p>
-            <p>Merci 🙏</p>
-        </div>
-    </section>
-
-    <!-- Page 2 -->
-    <section class="counter">
-        <div class="blob">
-            <h1>👀 Visiteurs</h1>
-            <p id="visitorCount">Chargement...</p>
-        </div>
-    </section>
+<div class="container">
+    <div id="globalCount">Chargement du compteur...</div>
+    <div class="blob">
+        <h1>👀 Visiteurs</h1>
+        <p id="visitorCount">Chargement...</p>
+    </div>
 </div>
 
 <script>
-    // Scroll horizontal avec molette
-    const container = document.getElementById('scrollContainer');
-    window.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        container.scrollLeft += e.deltaY;
-    }, { passive: false });
-
-    // Compteur visiteurs (LocalStorage)
+    // Ici on garde ton compteur local, ça compte les visites sur CE navigateur uniquement
     let visits = localStorage.getItem("visits");
     if (!visits) visits = 0;
     visits++;
     localStorage.setItem("visits", visits);
-    document.getElementById("visitorCount").textContent = visits + " visites";
+    document.getElementById("visitorCount").textContent = visits + " visites locales";
+
+    // Comme on n’a pas de backend, pour le compteur “global” on va simuler avec un chiffre fixe
+    // Tu peux modifier ce chiffre à la main pour faire genre "vrai compteur global"
+    const globalVisitors = 1234;
+    document.getElementById("globalCount").textContent = `Total visiteurs sur le site : ${globalVisitors}`;
 </script>
 
 </body>
